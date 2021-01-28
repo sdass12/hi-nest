@@ -1,24 +1,50 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import {Test, TestingModule} from '@nestjs/testing';
+import {INestApplication} from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import {AppModule} from './../src/app.module';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication;
+    let app: INestApplication;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    beforeEach(async () => {
+        const moduleFixture: TestingModule = await Test.createTestingModule({
+            imports: [AppModule],
+        }).compile();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+        app = moduleFixture.createNestApplication();
+        await app.init();
+    });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
+    it('/ (GET)', () => {
+        return request(app.getHttpServer())
+            .get('/')
+            .expect(200)
+            .expect('Welcome to my Movie API');
+    });
+
+    describe("/movies", () => {
+
+        it('GET', function () {
+            return request(app.getHttpServer())
+                .get("/movies")
+                .expect(200)
+                .expect([]);
+        });
+        it('POST', function () {
+            return request(app.getHttpServer())
+                .post('/movies')
+                .send({
+                    title: "Test",
+                    year: 2000,
+                    generes: ['test'],
+                });
+        });
+        it("DELETE", () => {
+            return request(app.getHttpServer())
+                .delete('/movie')
+                .expect(404)
+        });
+
+    })
+
 });
