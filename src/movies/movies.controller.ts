@@ -21,7 +21,7 @@ export class MoviesController {
         return `We are searching for a movie with a title: ${searchingYear}`;
     }
 
-    @Get('/:id')
+    @Get(':id')
     getOne(@Param('id') movieId: number): Movie {
         console.log(typeof movieId);
         return this.moviesService.getOne(movieId)
